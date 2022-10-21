@@ -1,0 +1,15 @@
+# Ignore Mac system files
+.DS_store
+
+brains/
+/brains
+*.txt
+
+*.tiff
+*.csv
+
+RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021/
+
+/RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021
+
+*.h5
