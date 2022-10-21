@@ -13,3 +13,6 @@ RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021/
 /RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021
 
 *.h5
+model_brain/
+
+*.npy
