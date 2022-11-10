@@ -16,3 +16,20 @@ RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021/
 model_brain/
 
 *.npy
+
+
+/models_alpha
+models_alpha/
+
+/models
+models/
+
+/wandb
+wandb/
+
+/wyniki
+wyniki/
+
+/__pycache__
+__pycache__/
+

@@ -1,8 +1,11 @@
+import tensorflow as tf
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+
 def image_load_generator_x(path,batch_size):
     
-    import numpy as np
-    import os
-    import matplotlib.pyplot as plt
+
     
     files = os.listdir(f'{path}/brain')
     L = len(files)
@@ -18,18 +21,23 @@ def image_load_generator_x(path,batch_size):
             x_train = []
             
             for file in files_batched:
+                
                 X_train = np.load(f'{path}/brain/{file}')
-            
-  
                 x_train.append(X_train)
-
-            x_train = np.array(x_train)
             
+                
+
+                
+                
+            
+                
+            x_train = np.array(x_train)
             x_train = x_train.reshape(x_train.shape[0],240,240)
  
             from keras.utils import normalize
             x_train = normalize(x_train,axis=1)
         
+           
             yield(np.array(x_train))
             
             batch_start +=batch_size
@@ -39,9 +47,7 @@ def image_load_generator_x(path,batch_size):
             
             
 def image_load_generator_mask(path,batch_size):
-    import numpy as np
-    import os
-    import matplotlib.pyplot as plt
+
 
     files = os.listdir(f'{path}/mask')
     L = len(files)
@@ -59,10 +65,10 @@ def image_load_generator_mask(path,batch_size):
             
             for file in files_batched:
                 Y_train = np.load(f'{path}/mask/{file}')
-            
-  
-
                 y_train.append(Y_train)
+                
+                
+            
             
             
 
@@ -100,9 +106,7 @@ def image_load_generator_mask(path,batch_size):
             
             
 def image_load_generator_mask_nocat(path,batch_size):
-    import numpy as np
-    import os
-    import matplotlib.pyplot as plt
+
 
     files = os.listdir(f'{path}/mask')
     L = len(files)
@@ -120,11 +124,17 @@ def image_load_generator_mask_nocat(path,batch_size):
             
             for file in files_batched:
                 Y_train = np.load(f'{path}/mask/{file}')
-            
-  
-
                 y_train.append(Y_train)
-            
+                
+                flipped = tf.image.flip_left_right(Y_train)
+                y_train.append(flipped)
+                
+                rotated = tf.image.rot90(Y_train)
+                y_train.append(rotated)
+                
+                rotated2 = tf.image.rot90(rotated)
+                y_train.append(rotated2)
+                
             
 
             
@@ -144,9 +154,7 @@ def image_load_generator_mask_nocat(path,batch_size):
             
             
 def image_load_generator_mask_binary(path,batch_size):
-    import numpy as np
-    import os
-    import matplotlib.pyplot as plt
+
 
     files = os.listdir(f'{path}/mask')
     L = len(files)
