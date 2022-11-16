@@ -28,18 +28,18 @@ def image_load_generator_x(path,files,batch_size):
             for file in files_batched:
                 
                 X_train = np.load(f'{path}/brain/{file}')
-                x_train.append(X_train)
+                X_train = X_train.reshape(1,160,160,4)
+                x_train.append(np.array(X_train))
             
                 
 
                 
                 
             
-                
+            l = len(x_train)    
             x_train = np.array(x_train)
-            x_train[x_train==9] = 0
             x_train = x_train/255
-            x_train = x_train.astype('float32')
+            x_train = x_train.reshape(l,160,160,4)
             yield(x_train)
             
             batch_start +=batch_size

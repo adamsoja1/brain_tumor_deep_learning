@@ -37,7 +37,6 @@ def image_load_generator_x(path,files,batch_size):
             
                 
             x_train = np.array(x_train)
-            x_train[x_train==9] = 0
             x_train = x_train/255
             x_train = x_train.astype('float32')
             yield(x_train)
