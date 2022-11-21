@@ -41,6 +41,7 @@ def unet(input_size = (240,240,1)):
 
     up6 = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same',
                 kernel_initializer=initializers.random_normal(stddev=0.01))(conv5),conv4], axis=3)
+    
     conv6 = Conv2D(256, (3, 3), activation='relu', padding='same',
                    kernel_initializer=initializers.random_normal(stddev=0.01))(up6)
     conv6 = Conv2D(256, (3, 3), activation='relu', padding='same',

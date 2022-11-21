@@ -8,11 +8,14 @@ import random
 random.seed(0)
 
 transform_vertflip = a.augmentations.geometric.transforms.VerticalFlip(p=1)
-transform_horplif =a.augmentations.geometric.transforms.Affine(p=1, shear = {'x': -10, 'y': 5})
-transform = a.RandomRotate90(p=1)
+transform_horplif =a.augmentations.geometric.transforms.Affine(p=1, rotate=270)
+transform = a.augmentations.geometric.transforms.Affine(p=1,scale=1.4)
 rotate = a.augmentations.geometric.transforms.Affine(p=1,scale=1.4)
 rotate2 = a.HorizontalFlip(p=1)
 rotate3 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.2,rotate =90 )
+rotate4 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=30)
+rotate5 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=-30)
+
 
 random.seed(0)
 def image_load_generator_x(path,files,batch_size):
@@ -44,6 +47,8 @@ def image_load_generator_x(path,files,batch_size):
                 brain4 = rotate(image = X_train)['image']
                 brain5 = rotate2(image = X_train)['image']
                 brain6 = rotate3(image = X_train)['image']
+                brain7 = rotate4(image = X_train)['image']
+                brain8 = rotate5(image = X_train)['image']
                 
                 x_train.append(X_train)
                 x_train.append(brain1)
@@ -52,6 +57,8 @@ def image_load_generator_x(path,files,batch_size):
                 x_train.append(brain4)
                 x_train.append(brain5)
                 x_train.append(brain6)
+                x_train.append(brain7)
+                x_train.append(brain8)
                 
                 
 
@@ -100,6 +107,8 @@ def image_load_generator_mask(path,files,batch_size):
                 mask4 = rotate(image = Y_train)['image']
                 mask5 = rotate2(image = Y_train)['image']
                 mask6 = rotate3(image = Y_train)['image']
+                mask7 = rotate4(image = Y_train)['image']
+                mask8 = rotate5(image = Y_train)['image']
 
                 
                 y_train.append(Y_train)
@@ -109,6 +118,8 @@ def image_load_generator_mask(path,files,batch_size):
                 y_train.append(mask4)
                 y_train.append(mask5)
                 y_train.append(mask6)
+                y_train.append(mask7)
+                y_train.append(mask8)
                 
             
             

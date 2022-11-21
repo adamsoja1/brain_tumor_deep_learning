@@ -1,7 +1,7 @@
 import tensorflow as  tf
 import os
 import numpy as np 
-from generator import image_load_generator_x,image_load_generator_mask
+from generator import image_load_generator_noaug,image_load_generator_mask_noaug
 import keras
 import matplotlib.pyplot as plt
 import random
@@ -10,10 +10,10 @@ path = 'brains/test'
 batch_size = 150
 files = os.listdir(f'{path}/brain')
 
-test_generator = image_load_generator_x(path,files,batch_size)
-mask_generator =image_load_generator_mask(path,files,batch_size)
+test_generator = image_load_generator_noaug(path,files,batch_size)
+mask_generator = image_load_generator_mask_noaug(path,files,batch_size)
 
-model = tf.keras.models.load_model('models/dice_160x160_4channels_lr0001_0.25.h5',compile=False)
+model = tf.keras.models.load_model('models/modelaug1.h5',compile=False)
 
 
 X_test = next(test_generator)
