@@ -10,12 +10,13 @@ random.seed(0)
 transform_vertflip = a.augmentations.geometric.transforms.VerticalFlip(p=1)
 transform_horplif =a.augmentations.geometric.transforms.Affine(p=1, rotate=270)
 transform = a.augmentations.geometric.transforms.Affine(p=1,scale=1.4)
-rotate = a.augmentations.geometric.transforms.Affine(p=1,scale=1.4)
+rotate = a.augmentations.geometric.transforms.Affine(p=1,scale=1.7,translate_px=50)
 rotate2 = a.HorizontalFlip(p=1)
 rotate3 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.2,rotate =90 )
 rotate4 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=30)
 rotate5 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=-30)
 
+#augmenracja z prawdopodobienstwem
 
 random.seed(0)
 def image_load_generator_x(path,files,batch_size):

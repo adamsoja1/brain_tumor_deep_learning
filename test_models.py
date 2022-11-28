@@ -6,14 +6,21 @@ import keras
 import matplotlib.pyplot as plt
 import random
 import tensorflow as  tf
-path = 'brains/test'
+
+from metrics_test_generator import IOU_metric 
+path = 'brains/train'
 batch_size = 150
 files = os.listdir(f'{path}/brain')
 
 test_generator = image_load_generator_noaug(path,files,batch_size)
 mask_generator = image_load_generator_mask_noaug(path,files,batch_size)
 
-model = tf.keras.models.load_model('models/modelaug1.h5',compile=False)
+
+model = tf.keras.models.load_model('models/modelaug1_allmetrics_combinedlosses_drp.h5',compile=False)
+
+IOU_metric(batch_size,test_generator,mask_generator,files,model)
+
+DICE_metrics(batch_size,test_generator,mask_generator,files,model)
 
 
 X_test = next(test_generator)
@@ -25,6 +32,13 @@ y_pred = model.predict(X_test)
 
 
 predicted_img=np.argmax(y_pred,axis=3)
+
+#sprawdzić ktory kolor to jaka klasa
+#learning rate na koncu
+#loss/augmentacja/architektura najpierw
+#regularyzacja
+#batch_size
+
 
 
 

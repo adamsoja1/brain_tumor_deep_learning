@@ -22,7 +22,6 @@ def image_load_generator_noaug(path,files,batch_size):
             
             files_batched = files[batch_start:limit]
             
-            #loading data
             x_train = []
             
             for file in files_batched:

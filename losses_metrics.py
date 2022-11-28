@@ -15,8 +15,6 @@ def dice_coef_class1(y_true, y_pred, smooth=1.0):
     y_pred_f = K.flatten(y_pred[:,:,:,1])
     intersection = K.sum(y_true_f * y_pred_f)
     total_loss = ((2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth))
-
-
     return total_loss
 
 
