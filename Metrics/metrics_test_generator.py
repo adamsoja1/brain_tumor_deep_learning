@@ -1,16 +1,17 @@
 import numpy as np
 from keras.metrics import MeanIoU
+from .losses_metrics import dice_coef_background,dice_coef_class1,dice_coef_class2,dice_coef_class3
 
 
 
 def IOU_metric(batch_size,generator_brain,generator_mask,files_list,model):
-    steps = files_list // batch_size
+    steps = len(files_list) // batch_size
     IOU_class1 = []
     IOU_class2 = []
     IOU_class3 = []
     IOU_class4 = []
     n_classes = 4
-    for step in steps:
+    for step in range(steps):
         
         X_test = next(generator_brain)
         Y_test = next(generator_mask)
@@ -39,8 +40,39 @@ def IOU_metric(batch_size,generator_brain,generator_mask,files_list,model):
     print("IoU for label 1 is: ", np.mean(IOU_class2))
     print("IoU for label 2 is: ", np.mean(IOU_class3))
     print("IoU for label 4 is: ", np.mean(IOU_class4))
-
+    print('Mean IOU:', ( np.mean(IOU_class2) + np.mean(IOU_class3) + np.mean(IOU_class4))/4 )
     
         
     
-    
+def DICE_metrics(batch_size,generator_brain,generator_mask,files_list,model):
+    steps = len(files_list) // batch_size
+    dice_class1 = []
+    dice_class2 = []
+    dice_class3 = []
+    dice_class4 = []
+    for step in range(steps):
+        
+        X_test = next(generator_brain)
+        Y_test = next(generator_mask)
+        y_pred = model.predict(X_test)
+        
+
+        dice1 = dice_coef_background(Y_test,y_pred)
+        dice2 = dice_coef_class1(Y_test,y_pred)
+        dice3 = dice_coef_class2(Y_test,y_pred)
+        dice4 = dice_coef_class3(Y_test,y_pred)
+        
+        dice_class1.append(dice1)
+        dice_class2.append(dice2)
+        dice_class3.append(dice3)
+        dice_class4.append(dice4)
+        
+    dice_class1 = np.array(dice_class1)    
+    dice_class2 = np.array(dice_class2)    
+    dice_class3 = np.array(dice_class3)    
+    dice_class4 = np.array(dice_class4)    
+    print("Dice for background is: ", np.mean(dice_class1))
+    print("Dice for label 1 is: ", np.mean(dice_class2))
+    print("Dice for label 2 is: ", np.mean(dice_class3))
+    print("Dice for label 4 is: ", np.mean(dice_class4))
+    print('Mean Dice:', (np.mean(dice_class2) + np.mean(dice_class3) + np.mean(dice_class4)) /3)

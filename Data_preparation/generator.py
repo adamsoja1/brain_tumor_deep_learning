@@ -38,6 +38,7 @@ def image_load_generator_noaug(path,files,batch_size):
             l = len(x_train)    
             x_train = np.array(x_train)
             x_train = x_train/255
+            x_train = x_train.astype('float32')
             x_train = x_train.reshape(l,160,160,4)
             yield(x_train)
             
@@ -78,7 +79,7 @@ def image_load_generator_mask_noaug(path,files,batch_size):
             
             y_train = np.array(y_train)
             
-            
+            y_train = y_train.astype(np.float16)
             
 
             yield(y_train)

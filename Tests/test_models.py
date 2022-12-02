@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import random
 import tensorflow as  tf
 
-from metrics_test_generator import IOU_metric 
-path = 'brains/train'
+from metrics_test_generator import IOU_metric,DICE_metrics
+path = 'brains/test'
 batch_size = 150
 files = os.listdir(f'{path}/brain')
 

@@ -40,6 +40,10 @@ class DataLoader(tf.keras.utils.Sequence):
         files = self.images[self.batch_start:self.batch_end]
         brain,seg = self.__get_data(files)
         self.__iter__()
+        brain = np.array(brain)
+        seg = np.array(seg)
+        brain = brain.reshape(brain.shape[0]*brain.shape[3],240,240)
+        seg = seg.reshape(seg.shape[0]*seg.shape[3],240,240)
         return brain,seg
     
     

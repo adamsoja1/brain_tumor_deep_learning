@@ -1,57 +1,49 @@
-import numpy as np
-from unet_model import multi_unet_model 
-from generator_augment import image_load_generator_x,image_load_generator_mask
 import os
-import segmentation_models as sm
-import tensorflow as tf
-import random
-from unet_2 import unet
-from generator import image_load_generator_noaug,image_load_generator_mask_noaug
 import wandb
+import numpy as np
+import tensorflow as tf
+import segmentation_models as sm
+import random
 from wandb.keras import WandbCallback
-from losses_metrics import dice_coef_background,dice_coef_class1,dice_coef_class2,dice_coef_class3
+
+
+
+
+from KerasModels.unet_model import multi_unet_model 
+from Preparation import DataGenerators
+
+#wandb.init(project="Model_augmentations_4chan2_class_metrics30epochs_0001_2_dropouts_onlyDICE__different_augmentation_littlerotations_uint8", entity="adamsoja")
+#from KerasModels.unet_2 import unet
+
+
+
+from Metrics.losses_metrics import dice_coef_background,dice_coef_class1,dice_coef_class2,dice_coef_class3
 from keras.losses import CategoricalCrossentropy
 
-random.seed(8)
+
+
+np.random.seed(8)
+
+path_train = 'brains/train/brain'
+path_valid = 'brains/valid/brain'
+batch_size =9
+
+
+Generators = DataGenerators(path_train, path_valid, batch_size)
 
 
 
-wandb.init(project="Model_augmentations_4chan2_class_metrics30epochs_0001_2_dropouts_onlyDICE_weighted2", entity="adamsoja")
+
+train_datagen,steps_train = Generators.Training_Datagen()
+val_datagen,steps_val = Generators.Validation_Datagen()
 
 
-files = os.listdir(f'brains/train/brain')
 
-files_val = os.listdir(f'brains/valid/brain')
-
-random.shuffle(files)
-
-
-batch_size = 9
- 
-
-train_X = image_load_generator_x('brains/train',files,batch_size)
-train_mask_gen = image_load_generator_mask('brains/train',files,batch_size)
-
-val_X = image_load_generator_noaug('brains/valid',files_val,batch_size)
-val_mask_gen = image_load_generator_mask_noaug('brains/valid',files_val,batch_size)
-
-steps_train = len(os.listdir('brains/train/mask')) // batch_size
-steps_val = len(os.listdir('brains/valid/mask')) // batch_size
-
-steps_val = steps_val-1
-
-dice_loss = sm.losses.DiceLoss(class_weights=np.array([0.01, 0.8, 1, 0.8])) 
-focal_loss = sm.losses.CategoricalFocalLoss()
-jacard_loss = sm.losses.JaccardLoss()
-loss_cross = sm.losses.CategoricalCELoss()
-
+dice_loss = sm.losses.DiceLoss(class_weights=np.array([1, 1, 1, 1])) 
 total_loss = dice_loss
 
+
 metrics = [sm.metrics.IOUScore(), sm.metrics.FScore(),dice_coef_background,dice_coef_class1,dice_coef_class2,dice_coef_class3]
-
-
-train_datagen = zip(train_X,train_mask_gen)
-val_datagen = zip(val_X,val_mask_gen)
 
 
 opt = tf.keras.optimizers.Adam(learning_rate=0.0001)
@@ -69,21 +61,34 @@ model.compile(optimizer=opt, loss=total_loss, metrics=[metrics])
 history = model.fit(train_datagen,
           steps_per_epoch = steps_train,
           verbose=1,
-          epochs=30, 
+          epochs=20, 
           validation_data=val_datagen, 
           validation_steps = steps_val,
           shuffle=False,
           callbacks=[WandbCallback()],)
                     
 
-model.save('models/modelaug1_allmetrics_combinedlosses_drp.h5')
+model.save('models/modelaug1_allmetrics_combinedlosses_drp22_2.h5')
 
 
 
 
 
 
+from Metrics.metrics_test_generator import IOU_metric,DICE_metrics
+
+
+
+path = 'brains/test'
+batch_size = 150
+files = os.listdir(f'{path}/brain')
+
+test_generator = image_load_generator_noaug(path,files,batch_size)
+mask_generator = image_load_generator_mask_noaug(path,files,batch_size)
 
 
 
 
+IOU_metric(batch_size,test_generator,mask_generator,files,model)
+
+DICE_metrics(batch_size,test_generator,mask_generator,files,model)

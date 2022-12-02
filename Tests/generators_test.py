@@ -10,6 +10,7 @@ import cv2
 from generator import image_load_generator_noaug,image_load_generator_mask_noaug
 from generator_augment import image_load_generator_x,image_load_generator_mask
 
+random.seed(0)
 
 batch_size = 1
 files = os.listdir('brains/train/mask')
@@ -31,6 +32,4 @@ Y_test = np.argmax(Y_test,axis=-1)
 
 for number in range(0,20):
     plt.imshow(X_test[number][:,:,1],cmap = 'gray')
-    plt.show()
-    plt.imshow(Y_test[number],cmap = 'gray')
     plt.show()

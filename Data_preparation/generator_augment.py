@@ -7,14 +7,14 @@ import random
 
 random.seed(0)
 
-transform_vertflip = a.augmentations.geometric.transforms.VerticalFlip(p=1)
-transform_horplif =a.augmentations.geometric.transforms.Affine(p=1, rotate=270)
-transform = a.augmentations.geometric.transforms.Affine(p=1,scale=1.4)
-rotate = a.augmentations.geometric.transforms.Affine(p=1,scale=1.7,translate_px=50)
-rotate2 = a.HorizontalFlip(p=1)
-rotate3 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.2,rotate =90 )
-rotate4 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=30)
-rotate5 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,translate_px=-30)
+transform_vertflip = a.augmentations.geometric.transforms.Affine(p=1, rotate=10)
+transform_horplif =a.augmentations.geometric.transforms.Affine(p=1, rotate=13)
+transform = a.augmentations.geometric.transforms.Affine(p=1,rotate=-13)
+rotate = a.augmentations.geometric.transforms.Affine(p=1,rotate=-10)
+rotate2 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,rotate =5 )
+rotate3 = a.augmentations.geometric.transforms.Affine(p=1,scale=1.3,rotate =-5 )
+rotate4 = a.augmentations.transforms.ChannelShuffle(p=1)
+xd = a.augmentations.transforms.RandomBrightnessContrast(brightness_limit=0.65, contrast_limit=0.3, p=1)
 
 #augmenracja z prawdopodobienstwem
 
@@ -42,6 +42,7 @@ def image_load_generator_x(path,files,batch_size):
 
                 X_train = np.load(f'{path}/brain/{file}')
                 X_train = X_train.reshape(160,160,4)
+                X_train = X_train.astype('uint8')
                 brain1 = transform_vertflip(image = X_train)['image']
                 brain2 = transform_horplif(image = X_train)['image']
                 brain3 = transform(image = X_train)['image']
@@ -49,7 +50,7 @@ def image_load_generator_x(path,files,batch_size):
                 brain5 = rotate2(image = X_train)['image']
                 brain6 = rotate3(image = X_train)['image']
                 brain7 = rotate4(image = X_train)['image']
-                brain8 = rotate5(image = X_train)['image']
+                brain8 = xd(image = X_train)['image']
                 
                 x_train.append(X_train)
                 x_train.append(brain1)
@@ -70,6 +71,7 @@ def image_load_generator_x(path,files,batch_size):
             x_train = np.array(x_train)
             x_train = x_train/255
             x_train = x_train.reshape(l,160,160,4)
+            x_train = x_train.astype('float32')
             yield(x_train)
             
             batch_start +=batch_size
@@ -109,7 +111,7 @@ def image_load_generator_mask(path,files,batch_size):
                 mask5 = rotate2(image = Y_train)['image']
                 mask6 = rotate3(image = Y_train)['image']
                 mask7 = rotate4(image = Y_train)['image']
-                mask8 = rotate5(image = Y_train)['image']
+                mask8 = xd(image = Y_train)['image']
 
                 
                 y_train.append(Y_train)
@@ -119,8 +121,8 @@ def image_load_generator_mask(path,files,batch_size):
                 y_train.append(mask4)
                 y_train.append(mask5)
                 y_train.append(mask6)
-                y_train.append(mask7)
-                y_train.append(mask8)
+                y_train.append(Y_train)
+                y_train.append(Y_train)
                 
             
             
@@ -130,7 +132,7 @@ def image_load_generator_mask(path,files,batch_size):
             v = len(y_train)
             y_train = np.array(y_train)
             y_train = y_train.reshape(v,160,160,4)
-            
+            y_train= y_train.astype('uint8')
             
 
             yield(y_train)
