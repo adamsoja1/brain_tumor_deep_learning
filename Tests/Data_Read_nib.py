@@ -2,7 +2,7 @@ import tensorflow as tf
 import nibabel as nib
 import numpy as np
 import os
-
+import matplotlib.pyplot as plt
 class DataLoader(tf.keras.utils.Sequence):
     
     def __init__(self,images,labels,batch_size,
@@ -42,13 +42,17 @@ class DataLoader(tf.keras.utils.Sequence):
         self.__iter__()
         brain = np.array(brain)
         seg = np.array(seg)
-        brain = brain.reshape(brain.shape[0]*brain.shape[3],240,240)
-        seg = seg.reshape(seg.shape[0]*seg.shape[3],240,240)
+
         return brain,seg
     
     
-path = 'RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021'
+path = '../RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021'
 images = os.listdir(path)
 data_loader = DataLoader(images,images,2,path)
 
 x,y = data_loader.__getitem__()
+x = x.reshape(100,240,240)
+
+x = x[10]
+x.max()
+plt.imshow(x)

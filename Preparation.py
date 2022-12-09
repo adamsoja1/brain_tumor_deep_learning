@@ -19,8 +19,7 @@ class DataGenerators:
     
     
     def Get_files(self,path):
-        files = os.listdir(path)
-        random.Random(8).shuffle(files)
+        files = os.listdir(f'{path}/brain')
 
         return files
 
@@ -39,8 +38,8 @@ class DataGenerators:
     def Validation_Datagen(self):
         valid_files = self.Get_files(self.path_valid)
 
-        brain_datagen = image_load_generator_x(self.path_valid,valid_files,self.batch_size)
-        mask_datagen = image_load_generator_mask(self.path_valid,valid_files,self.batch_size)
+        brain_datagen = image_load_generator_noaug(self.path_valid,valid_files,self.batch_size)
+        mask_datagen = image_load_generator_mask_noaug(self.path_valid,valid_files,self.batch_size)
         steps = len(valid_files) // self.batch_size
         
         return zip(brain_datagen,mask_datagen),steps

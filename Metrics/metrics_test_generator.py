@@ -40,7 +40,7 @@ def IOU_metric(batch_size,generator_brain,generator_mask,files_list,model):
     print("IoU for label 1 is: ", np.mean(IOU_class2))
     print("IoU for label 2 is: ", np.mean(IOU_class3))
     print("IoU for label 4 is: ", np.mean(IOU_class4))
-    print('Mean IOU:', ( np.mean(IOU_class2) + np.mean(IOU_class3) + np.mean(IOU_class4))/4 )
+    print('Mean IOU:', (np.mean(IOU_class2) + np.mean(IOU_class3) + np.mean(IOU_class4))/3 )
     
         
     

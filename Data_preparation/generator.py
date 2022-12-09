@@ -10,9 +10,6 @@ from keras.utils import normalize
 
 def image_load_generator_noaug(path,files,batch_size):
     
-    
-    
-
     L = len(files)
     while True:
         batch_start = 0
@@ -37,7 +34,7 @@ def image_load_generator_noaug(path,files,batch_size):
             
             l = len(x_train)    
             x_train = np.array(x_train)
-            x_train = x_train/255
+
             x_train = x_train.astype('float32')
             x_train = x_train.reshape(l,160,160,4)
             yield(x_train)
@@ -76,10 +73,10 @@ def image_load_generator_mask_noaug(path,files,batch_size):
             
 
             
-            
+            l = len(y_train)
             y_train = np.array(y_train)
-            
-            y_train = y_train.astype(np.float16)
+            y_train = y_train.reshape(l,160,160,4)
+            y_train = y_train.astype('float32')
             
 
             yield(y_train)
@@ -115,8 +112,8 @@ def image_load_generator_nib(path,files,batch_size,contrast):
             
             for file in files_batched:
                 
-                nib = nib.load(f'{path}/{file}/{file}_{contrast}.nii.gz')
-                x_train.append(nib)
+                nibx = nib.load(f'{path}/{file}/{file}_{contrast}.nii.gz').get_fdata()
+                x_train.append(nibx)
             
                 
 
