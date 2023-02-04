@@ -2,7 +2,7 @@ from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 from tensorflow.keras import initializers
 
-
+import tensorflow as tf
 
 #przetestować dropout
 

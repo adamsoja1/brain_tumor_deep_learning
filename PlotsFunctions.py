@@ -5,7 +5,7 @@ def make_plot(history,metric,name):
     import matplotlib.pyplot as plt
     import seaborn as sns
     sns.set()
-    acc, val_acc = history.history[metric], history.history[f'val_{metric}']
+    acc, val_acc = history[metric],history[f'val_{metric}']
     epochs = range(1, len(acc) + 1)
 
     plt.figure(figsize=(20, 13))
@@ -15,7 +15,7 @@ def make_plot(history,metric,name):
     plt.title('Dokładność trenowania i walidacji')
     plt.xlabel('Epochs')
     plt.ylabel(f'{metric}')
-    plt.savefig(f'plots/{metric[i]}.png)
+
 
 
 
@@ -27,11 +27,11 @@ def make_stacked_plot(history,metrics,name):
     import matplotlib.pyplot as plt
     import seaborn as sns
     sns.set()
-    acc1, val_acc1 = history.history[metrics[0]], history.history[f'val_{metrics[0]}']
-    acc2, val_acc2 = history.history[metrics[1]], history.history[f'val_{metrics[1]}']
-    acc3, val_acc3 = history.history[metrics[2]], history.history[f'val_{metrics[2]}']
+    acc1, val_acc1 = history.history[f'{metrics[0]}'], history.history[f'val_{metrics[0]}']
+    acc2, val_acc2 = history.history[f'{metrics[1]}'], history.history[f'val_{metrics[1]}']
+    acc3, val_acc3 = history.history[f'{metrics[2]}'], history.history[f'val_{metrics[2]}']
 
-    epochs = range(1, len(acc) + 1)
+    epochs = range(1, len(acc1) + 1)
 
     plt.figure(figsize=(20, 13))
     plt.plot(epochs, acc1, label='Training accuracy', marker='o')
@@ -43,5 +43,5 @@ def make_stacked_plot(history,metrics,name):
     plt.legend()
     plt.title('Dokładność trenowania i walidacji')
     plt.xlabel('Epochs')
-    plt.ylabel(f'{metics}')
-    plt.savefig(f'plots/{name}.png)
+    plt.ylabel(f'{metics[0]}')
+

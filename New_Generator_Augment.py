@@ -19,7 +19,8 @@ transform_all = a.Compose([
 
     
     ])
-    
+
+
 
 def Generator_augment(path,files,batch_size):
     

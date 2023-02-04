@@ -609,24 +609,3 @@ tm = stop - start
 
 
 
-image =nib.load('RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021/BraTS2021_00002/BraTS2021_00002_flair.nii.gz')
-seg = nib.load('RSNA_ASNR_MICCAI_BraTS2021_TrainingData_16July2021/BraTS2021_00002/BraTS2021_00002_seg.nii.gz').get_fdata()
-
-image = image.get_fdata()
-image1 = image
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

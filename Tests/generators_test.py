@@ -14,32 +14,48 @@ import random
 np.random.seed(2021)
 
 batch_size = 30
-files = os.listdir('../brains/train/mask')
+files = os.listdir('./brains/train/brain')
+random.shuffle(files)
 random.seed(0)
 random.shuffle(files)
-test_generator = image_load_generator_x('../brains/train',files,batch_size)
-mask_generator = image_load_generator_mask('../brains/train',files,batch_size)
-
+test_generator = image_load_generator_noaug('./brains/train',files,batch_size)
+mask_generator = image_load_generator_mask_noaug('./brains/train',files,batch_size)
 
 #datagen = zip(test_generator,mask_generator)
 
 
 
-datagen=Generator_augment('../brains/train',files,batch_size)
+
+datagen=Generator_augment('./brains/train',files,batch_size)
 
 
 
 
-X_test,Y_testt = next(datagen)
+X_test = next(mask_generator)
 
 
+X_test = np.argmax(X_test,axis=-1)
 
-Y_test = np.argmax(Y_testt,axis=-1)
-
-for number in range(0,20):
-    plt.imshow(X_test[number][:,:,0],cmap = 'gray')
+imgs = []
+for number in range(0,30):
+    plt.imshow(X_test[number],cmap = 'gray')
     plt.show()
-    plt.imshow(Y_test[number],cmap = 'gray')
-    plt.show()
+    imgs.append(X_test[number])
 
+
+fig, axs = plt.subplots(nrows=6, ncols=5, figsize=(30, 35))
+
+# Iteruj przez każdy obraz i wyświetl go w odpowiednim subplot
+for ax, image in zip(axs.flat, imgs):
+    ax.imshow(image, cmap='gray')
+
+
+
+
+
+fig, axs = plt.subplots(nrows=2, ncols=5, figsize=(30, 10))
+
+# Iteruj przez każdy obraz i wyświetl go w odpowiednim subplot
+for ax, image in zip(axs.flat, Y_test):
+    ax.imshow(image, cmap='gray')
 

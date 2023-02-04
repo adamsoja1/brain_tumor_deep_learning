@@ -37,6 +37,7 @@ class DataGenerators:
         
     def Validation_Datagen(self):
         valid_files = self.Get_files(self.path_valid)
+        random.shuffle(valid_files)
 
         brain_datagen = image_load_generator_noaug(self.path_valid,valid_files,self.batch_size)
         mask_datagen = image_load_generator_mask_noaug(self.path_valid,valid_files,self.batch_size)

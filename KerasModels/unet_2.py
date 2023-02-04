@@ -2,7 +2,7 @@ from keras.models import *
 from keras.layers import *
 from keras.optimizers import *
 from keras import initializers
-def unet(input_size = (240,240,1)):
+def unet(input_size = (160,160,4)):
     ''' U-Net
     Ags:
         args (argparse):    Arguments parsed in command-lind

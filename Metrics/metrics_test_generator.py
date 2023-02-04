@@ -18,8 +18,8 @@ def IOU_metric(batch_size,generator_brain,generator_mask,files_list,model):
         y_pred = model.predict(X_test)
         
        
-        Y_test = np.argmax(Y_test,axis=3)
-        y_pred = np.argmax(y_pred,axis=3)
+        Y_test = np.argmax(Y_test,axis=-1)
+        y_pred = np.argmax(y_pred,axis=-1)
         IOU_keras = MeanIoU(num_classes=n_classes)  
         IOU_keras.update_state(Y_test,y_pred)
         
@@ -75,4 +75,4 @@ def DICE_metrics(batch_size,generator_brain,generator_mask,files_list,model):
     print("Dice for label 1 is: ", np.mean(dice_class2))
     print("Dice for label 2 is: ", np.mean(dice_class3))
     print("Dice for label 4 is: ", np.mean(dice_class4))
-    print('Mean Dice:', (np.mean(dice_class2) + np.mean(dice_class3) + np.mean(dice_class4)) /3)
+    print('Mean Dice:', (np.mean(dice_class1)+np.mean(dice_class2) + np.mean(dice_class3) + np.mean(dice_class4)) /4)

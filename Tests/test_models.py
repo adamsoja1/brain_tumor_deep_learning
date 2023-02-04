@@ -16,7 +16,7 @@ test_generator = image_load_generator_noaug(path,files,batch_size)
 mask_generator = image_load_generator_mask_noaug(path,files,batch_size)
 
 
-model = tf.keras.models.load_model('models/modelaug1_allmetrics_combinedlosses_drp.h5',compile=False)
+model = tf.keras.models.load_model('models/ostateczny_model.h5',compile=False)
 
 IOU_metric(batch_size,test_generator,mask_generator,files,model)
 
